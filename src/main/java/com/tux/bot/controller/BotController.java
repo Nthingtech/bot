@@ -29,7 +29,8 @@ public class BotController {
     public String aiBot2(@RequestBody Question question) {
        OpenAiChatModel customModel = OpenAiChatModel.builder() /*More generic --- ChatLanguageModel customModel = new OpenAiChatModel.OpenAiChatModelBuilder()*/
                .apiKey(apiKey)
-               .temperature(0.1)
+               .modelName("gpt-4o")
+               .temperature(0.3)
                .build();
        return customModel.generate(question.question());
     }
