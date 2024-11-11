@@ -1,12 +1,19 @@
 package com.tux.bot.controller;
 
+import com.tux.bot.BotStructuredTemplate;
 import com.tux.bot.Question;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.input.Prompt;
+import dev.langchain4j.model.input.structured.StructuredPromptProcessor;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
 
 @RestController
 public class BotController {
@@ -33,6 +40,23 @@ public class BotController {
                .temperature(0.3)
                .build();
        return customModel.generate(question.question());
+    }
+
+    @GetMapping("/chat")
+    public String model(@RequestParam( value = "message", defaultValue = "Hello Ai World! lol") String message) {
+        return chatLanguageModel.generate(message);
+    }
+
+    @GetMapping("/training")
+    public String makeTraining() {
+        var template = new BotStructuredTemplate();
+        var trPrompt = new BotStructuredTemplate.PromptDeTreino();
+        trPrompt.training = "Ganho de massa muscular";
+        trPrompt.level = "Avançado";
+        trPrompt.pathology = Arrays.asList("sem restrições");
+
+        Prompt prompt = StructuredPromptProcessor.toPrompt(trPrompt);
+        return chatLanguageModel.generate(prompt.text()) ;
     }
 
 }
