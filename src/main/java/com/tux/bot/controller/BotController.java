@@ -3,9 +3,11 @@ package com.tux.bot.controller;
 import com.tux.bot.BotStructuredTemplate;
 import com.tux.bot.Question;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.input.Prompt;
 import dev.langchain4j.model.input.structured.StructuredPromptProcessor;
 import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.model.openai.OpenAiImageModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +59,19 @@ public class BotController {
 
         Prompt prompt = StructuredPromptProcessor.toPrompt(trPrompt);
         return chatLanguageModel.generate(prompt.text()) ;
+    }
+
+    @PostMapping("/image")
+    public String generateImage(@RequestBody Question question) {
+        try {
+            ImageModel imageModel = new OpenAiImageModel.OpenAiImageModelBuilder()
+                    .apiKey(apiKey)
+                    .modelName("dall-e")
+                    .build();
+            return imageModel.generate(question.question()).content().url().toURL().toString();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
