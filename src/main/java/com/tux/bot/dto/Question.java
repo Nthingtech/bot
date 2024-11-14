@@ -1,4 +1,4 @@
-package com.tux.bot;
+package com.tux.bot.dto;
 
 public record Question (String question) {
 }

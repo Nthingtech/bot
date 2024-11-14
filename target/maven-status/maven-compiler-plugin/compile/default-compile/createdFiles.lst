@@ -1,0 +1,7 @@
+com/tux/bot/rag/Assistant.class
+com/tux/bot/rag/RAGConfiguration.class
+com/tux/bot/BotStructuredTemplate.class
+com/tux/bot/BotStructuredTemplate$PromptDeTreino.class
+com/tux/bot/controller/BotController.class
+com/tux/bot/Question.class
+com/tux/bot/BotApplication.class

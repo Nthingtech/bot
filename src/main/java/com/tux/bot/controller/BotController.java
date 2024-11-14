@@ -1,7 +1,9 @@
 package com.tux.bot.controller;
 
 import com.tux.bot.BotStructuredTemplate;
-import com.tux.bot.Question;
+import com.tux.bot.dto.Question;
+import com.tux.bot.rag.Assistant;
+import com.tux.bot.rag.RAGConfiguration;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.input.Prompt;
@@ -22,9 +24,13 @@ public class BotController {
 
    //Instead of @Autowired
    private final ChatLanguageModel chatLanguageModel;
-   public BotController(ChatLanguageModel chatLanguageModel) {
+   private final RAGConfiguration config;
+   public BotController(ChatLanguageModel chatLanguageModel, RAGConfiguration config) {
        this.chatLanguageModel = chatLanguageModel;
+       this.config = config;
    }
+
+   private Assistant assistente;
 
    @Value("${OPENAI_KEY}")
    private String apiKey;
@@ -39,7 +45,7 @@ public class BotController {
        OpenAiChatModel customModel = OpenAiChatModel.builder() /*More generic --- ChatLanguageModel customModel = new OpenAiChatModel.OpenAiChatModelBuilder()*/
                .apiKey(apiKey)
                .modelName("gpt-4o")
-               .temperature(0.3)
+               .temperature(0.1)
                .build();
        return customModel.generate(question.question());
     }
@@ -74,4 +80,16 @@ public class BotController {
         }
     }
 
+    @PostMapping("/chatwithrag")
+    public String conversarViaRag(@RequestBody Question question) {
+        try {
+            if (assistente == null) {
+                assistente = config.configure();
+            }
+            return assistente.answer(question.question());
+        }
+        catch (Exception exception) {
+            return "Erro";
+        }
+    }
 }
