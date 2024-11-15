@@ -4,6 +4,7 @@ import com.tux.bot.BotStructuredTemplate;
 import com.tux.bot.dto.Question;
 import com.tux.bot.rag.Assistant;
 import com.tux.bot.rag.RAGConfiguration;
+import com.tux.bot.service.ChatService;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.input.Prompt;
@@ -25,9 +26,11 @@ public class BotController {
    //Instead of @Autowired
    private final ChatLanguageModel chatLanguageModel;
    private final RAGConfiguration config;
-   public BotController(ChatLanguageModel chatLanguageModel, RAGConfiguration config) {
+   private final ChatService chatService;
+   public BotController(ChatLanguageModel chatLanguageModel, RAGConfiguration config, ChatService chatService) {
        this.chatLanguageModel = chatLanguageModel;
        this.config = config;
+       this.chatService = chatService;
    }
 
    private Assistant assistente;
@@ -91,5 +94,10 @@ public class BotController {
         catch (Exception exception) {
             return "Erro";
         }
+    }
+
+    @PostMapping("/persist")
+    public void handleMessage(@RequestBody String userMessage) {
+        chatService.processUserMessage(userMessage);
     }
 }
