@@ -1,5 +1,6 @@
 package com.tux.bot.model;
 
+import dev.langchain4j.model.output.structured.Description;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,8 +13,13 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Description("first name of a client")
     private String name;
+
+    @Description("Age of client")
     private Integer age;
+
+    @Description("Phone of client")
     private String phone;
 
     public Client() {

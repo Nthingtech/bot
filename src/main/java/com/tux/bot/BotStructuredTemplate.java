@@ -6,7 +6,8 @@ import java.util.List;
 
 public class BotStructuredTemplate {
 
-    @StructuredPrompt({
+    @StructuredPrompt(
+            {
             "Crie um treino para o objetivo {{training}} usando exercícios para o tratamento desta {{pathology}} e tem este {{level}}",
             "Estruture sua resposta da seguinte forma:",
             "Nome do Treino: ...",
