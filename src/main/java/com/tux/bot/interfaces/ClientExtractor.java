@@ -5,6 +5,9 @@ import dev.langchain4j.service.UserMessage;
 
 public interface ClientExtractor {
 
-    @UserMessage("Extract information about a client form {{textClient}}")
+    @UserMessage("""
+            Extract information about a client form {{textClient}}
+            
+           """)
     Client extractClientFrom(String textClient);
 }
