@@ -7,7 +7,7 @@ public interface ClientExtractor {
 
     @UserMessage("""
             Extract information about a client form {{textClient}}
-            
+            and always generate a different id that is in the database"
            """)
     Client extractClientFrom(String textClient);
 }
